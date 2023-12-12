@@ -24,7 +24,7 @@
   <ItemGroup>
     <PackageReference Include="ReactiveUI" Version="*" />
     <PackageReference Include="RxExt" Version="*" />
-    <PackageReference Include="SalaTools.Core" Version="1.0.0" />
+    <PackageReference Include="SalaTools.Core" Version="*" />
   </ItemGroup>
 
 </Project>
