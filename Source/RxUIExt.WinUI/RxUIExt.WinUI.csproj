@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <UseWinUI>true</UseWinUI>
+    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <Nullable>disable</Nullable>
+    <Title>RxUIExt.WinUI</Title>
+    <Authors>Bojan Sala</Authors>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/bawkee/RxUIExt</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bawkee/RxUIExt</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>WinUI extensions and tools for RxUIExt.</Description>
+    <PackageTags>ReactiveExtensions;RxCastle;WinUI;Windsor;System.Reactive;Observable;Utility;Extensions;ReactiveProgramming;ReactiveUI;RxUI;WinUI;WPF;Uno;Avalonia;ExUIExt;Rx.NET</PackageTags>
+    <Copyright>Copyright (c) 2024 Bojan Sala</Copyright>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="True" PackagePath="\" Visible="False" />
+    <None Include="..\..\README.md" Pack="True" PackagePath="\" Visible="False" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RxUIExt\RxUIExt.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="*" />
+    <PackageReference Include="ReactiveUI.WinUI" Version="*" />
+    <PackageReference Include="ReactiveMarbles.ObservableEvents.SourceGenerator" Version="*" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <Title>RxUIExt.Windsor</Title>
+    <Authors>Bojan Sala</Authors>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/bawkee/RxUIExt</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bawkee/RxUIExt</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Windsor extensions and tools for RxUIExt, which neatly lets Castle Windsor take care of your View/ViewModel/ViewModelViewHost DI woes.</Description>
+    <PackageTags>ReactiveExtensions;RxCastle;Windsor;System.Reactive;Observable;Utility;Extensions;ReactiveProgramming;ReactiveUI;RxUI;WinUI;WPF;Uno;Avalonia;ExUIExt;Rx.NET</PackageTags>
+    <Copyright>Copyright (c) 2024 Bojan Sala</Copyright>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="True" PackagePath="\" Visible="False" />
+    <None Include="..\..\README.md" Pack="True" PackagePath="\" Visible="False" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RxUIExt\RxUIExt.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Windsor" Version="*" />
+  </ItemGroup>
+</Project>
