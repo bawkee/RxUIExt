@@ -13,8 +13,19 @@ using Splat;
 /// </summary>
 public enum ViewHostCacheType
 {
+    /// <summary>
+    /// No caching
+    /// </summary>
     None,
+    
+    /// <summary>
+    /// Cache views by view model instance
+    /// </summary>
     ByInstance,
+
+    /// <summary>
+    /// Cache views by view model type
+    /// </summary>
     ByType
 }
 

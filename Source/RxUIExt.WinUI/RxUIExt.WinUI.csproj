@@ -18,6 +18,8 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>1.0.0</Version>
     <RepositoryType>git</RepositoryType>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageReleaseNotes>- Xmldocs included</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

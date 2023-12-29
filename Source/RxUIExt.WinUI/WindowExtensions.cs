@@ -7,6 +7,9 @@ using WinRT.Interop;
 
 public static class WindowExtensions
 {
+    /// <summary>
+    /// Get main WinUI app window
+    /// </summary>
     public static AppWindow GetAppWindow(this Window window)
     {
         var hWnd = WindowNative.GetWindowHandle(window);
