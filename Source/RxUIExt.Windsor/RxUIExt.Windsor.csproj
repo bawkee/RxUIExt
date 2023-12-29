@@ -12,7 +12,7 @@
     <PackageTags>ReactiveExtensions;RxCastle;Windsor;System.Reactive;Observable;Utility;Extensions;ReactiveProgramming;ReactiveUI;RxUI;WinUI;WPF;Uno;Avalonia;ExUIExt;Rx.NET</PackageTags>
     <Copyright>Copyright (c) 2024 Bojan Sala</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <RepositoryType>git</RepositoryType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageReleaseNotes>- Xmldocs included</PackageReleaseNotes>
