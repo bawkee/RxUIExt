@@ -7,6 +7,9 @@ using System.Reactive.Linq;
 using System.Reactive;
 using RxExt;
 
+/// <summary>
+/// Various extensions for ReactiveUI.
+/// </summary>
 public static class RxUIExtensions
 {
     /// <summary>

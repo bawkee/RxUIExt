@@ -17,7 +17,7 @@ public enum ViewHostCacheType
     /// No caching
     /// </summary>
     None,
-    
+
     /// <summary>
     /// Cache views by view model instance
     /// </summary>
@@ -41,24 +41,28 @@ public enum ViewHostCacheType
 /// </summary>
 public class ViewHost : TransitioningContentControl, IViewFor, IEnableLogger
 {
+    /// <summary>Dependency property</summary>    
     public static readonly DependencyProperty CacheTypeProperty =
         DependencyProperty.Register(nameof(CacheType),
                                     typeof(ViewHostCacheType),
                                     typeof(ViewHost),
                                     new(default(ViewHostCacheType)));
 
+    /// <summary>Dependency property</summary>    
     public static readonly DependencyProperty DefaultContentProperty =
         DependencyProperty.Register(nameof(DefaultContent),
                                     typeof(object),
                                     typeof(ViewModelViewHost),
                                     new(null));
 
+    /// <summary>Dependency property</summary>    
     public static readonly DependencyProperty ViewModelProperty =
         DependencyProperty.Register(nameof(ViewModel),
                                     typeof(object),
                                     typeof(ViewModelViewHost),
                                     new(null));
 
+    /// <summary>Dependency property</summary>    
     public static readonly DependencyProperty ViewContractObservableProperty =
         DependencyProperty.Register(nameof(ViewContractObservable),
                                     typeof(IObservable<string>),
@@ -67,6 +71,9 @@ public class ViewHost : TransitioningContentControl, IViewFor, IEnableLogger
 
     private string _viewContract;
 
+    /// <summary>
+    /// Constructs this <c>ViewHost</c> class.
+    /// </summary>
     public ViewHost()
     {
         var platform = Locator.Current.GetService<IPlatformOperations>();
@@ -220,7 +227,7 @@ public class ViewHost : TransitioningContentControl, IViewFor, IEnableLogger
         {
             ViewHostCacheType.ByType => vm.GetType(),
             ViewHostCacheType.ByInstance => vm,
-            _ => throw new NotImplementedException()
+            _ => throw new NotSupportedException()
         };
 
         return _cache.TryGetValue((obj, contract), out result);
@@ -235,7 +242,7 @@ public class ViewHost : TransitioningContentControl, IViewFor, IEnableLogger
         {
             ViewHostCacheType.ByType => vm.GetType(),
             ViewHostCacheType.ByInstance => vm,
-            _ => throw new NotImplementedException()
+            _ => throw new NotSupportedException()
         };
 
         _cache[(obj, contract)] = value;

@@ -10,6 +10,9 @@ using ReactiveMarbles.ObservableEvents;
 using System.Reactive.Linq;
 using System.Reactive.Disposables;
 
+/// <summary>
+/// Provides extensions for showing a customized ContentDialog for various tasks.
+/// </summary>
 public static class DialogExtensions
 {
     /// <summary>
@@ -73,10 +76,28 @@ public static class DialogExtensions
     }
 }
 
+/// <summary>
+/// Options used for Input Dialog in <see cref="DialogExtensions"/>
+/// </summary>
 public class TextInputDialogOptions
 {
+    /// <summary>
+    /// <see cref="TextBox"/> used for the input.
+    /// </summary>
     public TextBox InputBox { get; internal init; }
+
+    /// <summary>
+    /// The <see cref="ContentDialog"/> itself.
+    /// </summary>
     public ContentDialog Dialog { get; internal init; }
+
+    /// <summary>
+    /// If you have disposables of your own, add them here.
+    /// </summary>
     public CompositeDisposable Disposables { get; internal init; }
+
+    /// <summary>
+    /// Validation logic for the Input Dialog.
+    /// </summary>
     public Func<string, bool> Validation { get; set; }
 }

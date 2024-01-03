@@ -9,8 +9,17 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using ReactiveUI;
 
+/// <summary>
+/// Various ReactiveUI extensions for Windsor Castle.
+/// </summary>
 public static class CastleExtensions
 {
+    /// <summary>
+    /// Finds all <see cref="ViewModel"/> derived types and adds them to the provided container. Attributes are also available
+    /// which can help you customize this behavior.
+    /// </summary>
+    /// <param name="container">Your DI container</param>
+    /// <param name="assemblyDescriptor">Descriptor which tells us where to start looking.</param>
     public static void RegisterViewModels(this IWindsorContainer container, FromAssemblyDescriptor assemblyDescriptor) =>
         container.Register(assemblyDescriptor
                            .BasedOn<ViewModel>()
@@ -28,6 +37,12 @@ public static class CastleExtensions
                                    c.LifestyleTransient();
                            }));
 
+    /// <summary>
+    /// Finds all <see cref="IViewFor{T}"/> derived types and adds them to the provided container.Attributes are also 
+    /// available which can help you customize this behavior.
+    /// </summary>
+    /// <param name="container">Your DI container</param>
+    /// <param name="assemblyDescriptor">Descriptor which tells us where to start looking.</param>
     public static void RegisterViews(this IWindsorContainer container, FromAssemblyDescriptor assemblyDescriptor) =>
         container.Register(assemblyDescriptor
                            .BasedOn(typeof(IViewFor<>))
@@ -35,15 +50,39 @@ public static class CastleExtensions
                            .WithService.FromInterface()
                            .LifestyleTransient());
 
-    public static void RegisterViewModelsAndViews(this IWindsorContainer container, string asmName) =>
-        container.RegisterViewModelsAndViews(Types.FromAssemblyNamed(asmName));
-
+    /// <summary>
+    /// Finds all <see cref="IViewFor{T}"/> and <see cref="ViewModel"/> derived types and adds them to the provided container.
+    /// Attributes are also available which can help you customize this behavior.
+    /// </summary>
+    /// <param name="container">Your DI container</param>
+    /// <param name="assemblyDescriptor">Descriptor which tells us where to start looking.</param>
     public static void RegisterViewModelsAndViews(this IWindsorContainer container, FromAssemblyDescriptor assemblyDescriptor)
     {
         container.RegisterViewModels(assemblyDescriptor);
         container.RegisterViews(assemblyDescriptor);
     }
 
+    /// <summary>
+    /// Finds all <see cref="IViewFor{T}"/> and <see cref="ViewModel"/> derived types and adds them to the provided container.
+    /// Attributes are also available which can help you customize this behavior.
+    /// </summary>
+    /// <param name="container">Your DI container</param>
+    /// <param name="asmName">Name of the assembly to start from.</param>
+    public static void RegisterViewModelsAndViews(this IWindsorContainer container, string asmName) =>
+        container.RegisterViewModelsAndViews(Types.FromAssemblyNamed(asmName));
+
+    /// <summary>
+    /// Resolves a view from the container according to the provided view model type, and window type.
+    /// </summary>
+    /// <param name="container">Your DI container</param>
+    /// <param name="viewModelType">Type of the view model that you're looking a view for</param>
+    /// <param name="windowType">Type of the Window class that's used by your framework, different types are used by
+    /// different frameworks (WPF, UWP, WinUI, Uno, Avalonia, etc.)</param>
+    /// <param name="viewName">Name of the view in case this view model contains multiple views</param>
+    /// <param name="window">Set to true, if you are looking for a Window type rather than Page or UserControl.</param>
+    /// <returns>Instance of type <c>IViewFor</c></returns>
+    /// <exception cref="ArgumentException">No view could be found or multiple views found.</exception>
+    /// <exception cref="ViewResolveException">The view could not be resolved by Windsor (it was not registered).</exception>
     public static IViewFor GetView(
         this IWindsorContainer container,
         Type viewModelType,
@@ -82,6 +121,19 @@ public static class CastleExtensions
         throw new ViewResolveException();
     }
 
+    /// <summary>
+    /// Resolves a view from the container according to the provided view model type, and window type.
+    /// </summary>
+    /// <typeparam name="TVm">Type of the view model that you're looking a view for</typeparam>
+    /// <typeparam name="TWnd">Type of the Window class that's used by your framework, different types are used by
+    /// different frameworks (WPF, UWP, WinUI, Uno, Avalonia, etc.)</typeparam>
+    /// <param name="container">Your DI container</param>
+    /// <param name="viewModel">Type of the view model that you're looking a view for</param>
+    /// <param name="viewName">Name of the view in case this view model contains multiple views</param>
+    /// <param name="window">Set to true, if you are looking for a Window type rather than Page or UserControl.</param>
+    /// <returns>Instance of type <c>IViewFor</c></returns>
+    /// <exception cref="ArgumentException">No view could be found or multiple views found.</exception>
+    /// <exception cref="ViewResolveException">The view could not be resolved by Windsor (it was not registered).</exception>
     public static IViewFor GetView<TVm, TWnd>(
         this IWindsorContainer container,
         TVm viewModel,
@@ -89,6 +141,18 @@ public static class CastleExtensions
         bool window = false) =>
         container.GetView(typeof(TVm), typeof(TWnd), viewName, window);
 
+    /// <summary>
+    /// Resolves a view from the container according to the provided view model instance, and window type.
+    /// </summary>
+    /// <typeparam name="TWnd">Type of the Window class that's used by your framework, different types are used by
+    /// different frameworks (WPF, UWP, WinUI, Uno, Avalonia, etc.)</typeparam>
+    /// <param name="container">Your DI container</param>
+    /// <param name="viewModel">Instance of the view model that you're looking a view for.</param>
+    /// <param name="viewName">Name of the view in case this view model contains multiple views</param>
+    /// <param name="window">Set to true, if you are looking for a Window type rather than Page or UserControl.</param>
+    /// <returns>Instance of type <c>IViewFor</c></returns>
+    /// <exception cref="ArgumentException">No view could be found or multiple views found.</exception>
+    /// <exception cref="ViewResolveException">The view could not be resolved by Windsor (it was not registered).</exception>
     public static IViewFor GetView<TWnd>(
         this IWindsorContainer container,
         object viewModel,
@@ -97,12 +161,21 @@ public static class CastleExtensions
         container.GetView(viewModel.GetType(), typeof(TWnd), viewName, window);
 }
 
+/// <summary>
+/// Thrown when <c>GetView</c> fails to resolve a view.
+/// </summary>
 public class ViewResolveException : Exception
 {
-    public ViewResolveException()
+    internal ViewResolveException()
         : base("Failed to resolve view dependency.") { }
 }
 
+/// <summary>
+/// Instructs the <see cref="CastleExtensions"/> class to not register the given type.
+/// </summary>
 public class DoNotRegisterAttribute : Attribute { }
 
+/// <summary>
+/// Instructs the <see cref="CastleExtensions"/> class to register the given type as a singleton.
+/// </summary>
 public class SingletonAttribute : Attribute { }

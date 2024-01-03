@@ -19,6 +19,29 @@ using ReactiveUI;
 /// </summary>
 public static class SerialReactiveCommand
 {
+    /// <summary>
+    /// Creates a <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous, cancellable execution logic that takes a parameter of 
+    /// type <typeparamref name="TParam"/>.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides an observable representing the command's asynchronous execution logic as well as a cancellation command which can be
+    /// used to cancel the execution of this <c>SerialReactiveCommand</c>.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TParam">
+    /// The type of the parameter passed through to command execution.
+    /// </typeparam>
+    /// <typeparam name="TResult">
+    /// The type of the command's result.
+    /// </typeparam>
     public static SerialReactiveCommand<TParam, TResult> CreateFromObservable<TParam, TResult>(
         Func<TParam, ReactiveCommand<Unit, Unit>, IObservable<TResult>> execute,
         IObservable<bool> canExecute = null,
@@ -48,22 +71,80 @@ public static class SerialReactiveCommand
             cancelCmd,
             canExecute ?? Observable.Return(true),
             outputScheduler ?? RxApp.MainThreadScheduler);
-
+        
         return cmd;
     }
 
+    /// <summary>
+    /// Creates a <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic that takes a parameter of 
+    /// type <typeparamref name="TParam"/>.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides an observable representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TParam">
+    /// The type of the parameter passed through to command execution.
+    /// </typeparam>
+    /// <typeparam name="TResult">
+    /// The type of the command's result.
+    /// </typeparam>
     public static SerialReactiveCommand<TParam, TResult> CreateFromObservable<TParam, TResult>(
         Func<TParam, IObservable<TResult>> execute,
         IObservable<bool> canExecute = null,
         IScheduler outputScheduler = null) =>
         CreateFromObservable<TParam, TResult>((p, _) => execute(p), canExecute, outputScheduler);
 
+    /// <summary>
+    /// Creates a parameterless <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides an observable representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TResult">
+    /// The type of the command's result.
+    /// </typeparam>
     public static SerialReactiveCommand<Unit, TResult> CreateFromObservable<TResult>(
         Func<IObservable<TResult>> execute,
         IObservable<bool> canExecute = null,
         IScheduler outputScheduler = null) =>
         CreateFromObservable<Unit, TResult>(_ => execute(), canExecute, outputScheduler);
 
+    /// <summary>
+    /// Creates a parameterless <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TResult">
+    /// The type of the command's result.
+    /// </typeparam>
     public static SerialReactiveCommand<Unit, TResult> CreateFromTask<TResult>(
         Func<Task<TResult>> execute,
         IObservable<bool> canExecute = null,
@@ -73,6 +154,24 @@ public static class SerialReactiveCommand
             canExecute,
             outputScheduler);
 
+    /// <summary>
+    /// Creates a parameterless, cancellable <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TResult">
+    /// The type of the command's result.
+    /// </typeparam>
     public static SerialReactiveCommand<Unit, TResult> CreateFromTask<TResult>(
         Func<CancellationToken, Task<TResult>> execute,
         IObservable<bool> canExecute = null,
@@ -82,6 +181,21 @@ public static class SerialReactiveCommand
             canExecute,
             outputScheduler);
 
+    /// <summary>
+    /// Creates a parameterless <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
     public static SerialReactiveCommand<Unit, Unit> CreateFromTask(
         Func<Task> execute,
         IObservable<bool> canExecute = null,
@@ -91,6 +205,21 @@ public static class SerialReactiveCommand
             canExecute,
             outputScheduler);
 
+    /// <summary>
+    /// Creates a parameterless, cancellable <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
     public static SerialReactiveCommand<Unit, Unit> CreateFromTask(
         Func<CancellationToken, Task> execute,
         IObservable<bool> canExecute = null,
@@ -100,6 +229,28 @@ public static class SerialReactiveCommand
             canExecute,
             outputScheduler);
 
+    /// <summary>
+    /// Creates a <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic that takes 
+    /// a parameter of type <typeparamref name="TParam"/>.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TParam">
+    /// The type of the parameter passed through to command execution.
+    /// </typeparam>
+    /// <typeparam name="TResult">
+    /// The type of the command's result.
+    /// </typeparam>
     public static SerialReactiveCommand<TParam, TResult> CreateFromTask<TParam, TResult>(
         Func<TParam, Task<TResult>> execute,
         IObservable<bool> canExecute = null,
@@ -109,6 +260,28 @@ public static class SerialReactiveCommand
             canExecute,
             outputScheduler);
 
+    /// <summary>
+    /// Creates a <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous, cancellable execution logic that takes a 
+    /// parameter of type <typeparamref name="TParam"/>.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TParam">
+    /// The type of the parameter passed through to command execution.
+    /// </typeparam>
+    /// <typeparam name="TResult">
+    /// The type of the command's result.
+    /// </typeparam>
     public static SerialReactiveCommand<TParam, TResult> CreateFromTask<TParam, TResult>(
         Func<TParam, CancellationToken, Task<TResult>> execute,
         IObservable<bool> canExecute = null,
@@ -118,6 +291,25 @@ public static class SerialReactiveCommand
             canExecute,
             outputScheduler);
 
+    /// <summary>
+    /// Creates a <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous execution logic that takes a 
+    /// parameter of type <typeparamref name="TParam"/>.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TParam">
+    /// The type of the parameter passed through to command execution.
+    /// </typeparam>
     public static SerialReactiveCommand<TParam, Unit> CreateFromTask<TParam>(
         Func<TParam, Task> execute,
         IObservable<bool> canExecute = null,
@@ -127,6 +319,25 @@ public static class SerialReactiveCommand
             canExecute,
             outputScheduler);
 
+    /// <summary>
+    /// Creates a <see cref="SerialReactiveCommand{TParam, TResult}"/> with asynchronous, cancellable execution logic that 
+    /// takes a parameter of type <typeparamref name="TParam"/>.
+    /// </summary>
+    /// <param name="execute">
+    /// Provides a <see cref="Task"/> representing the command's asynchronous execution logic.
+    /// </param>
+    /// <param name="canExecute">
+    /// An optional observable that dictates the availability of the command for execution.
+    /// </param>
+    /// <param name="outputScheduler">
+    /// An optional scheduler that is used to surface events. Defaults to <c>RxApp.MainThreadScheduler</c>.
+    /// </param>
+    /// <returns>
+    /// The <c>SerialReactiveCommand</c> instance.
+    /// </returns>
+    /// <typeparam name="TParam">
+    /// The type of the parameter passed through to command execution.
+    /// </typeparam>
     public static SerialReactiveCommand<TParam, Unit> CreateFromTask<TParam>(
         Func<TParam, CancellationToken, Task> execute,
         IObservable<bool> canExecute = null,
@@ -172,25 +383,35 @@ public sealed class SerialReactiveCommand<TParam, TResult> : ReactiveCommandBase
         Cancel = cancelCmd;
     }
 
+    /// <summary>
+    /// Command that when executed triggers the cancellation of this <see cref="SerialReactiveCommand{TParam, TResult}"/> command.
+    /// </summary>
     public ReactiveCommand<Unit, Unit> Cancel { get; }
 
+    /// <inheritdoc />
     public override IDisposable Subscribe(IObserver<TResult> observer) =>
         _impl.Subscribe(observer);
 
+    /// <inheritdoc />
     public override IObservable<TResult> Execute(TParam parameter) => _impl.Execute(parameter);
 
+    /// <inheritdoc />
     public override IObservable<TResult> Execute() => _impl.Execute();
 
+    /// <inheritdoc />
     protected override void Dispose(bool disposing)
     {
         if (disposing)
             _disposables.Dispose();
     }
 
+    /// <inheritdoc />
     public override IObservable<bool> CanExecute => _canExecute;
 
+    /// <inheritdoc />
     public override IObservable<bool> IsExecuting => _impl.IsExecuting;
 
+    /// <inheritdoc />
     public override IObservable<Exception> ThrownExceptions => _impl.ThrownExceptions
                                                                     .Merge(_exceptions);
 }

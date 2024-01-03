@@ -10,6 +10,8 @@ using System.Reactive.Subjects;
 using System.Reflection;
 using SalaTools.Core;
 
+// TODO: Really should revamp the structure of this class, it is confusing
+
 /// <summary>
 /// Tracks all the properties which fire change notifications in order to determine whether a property is dirty or not.
 /// </summary>
